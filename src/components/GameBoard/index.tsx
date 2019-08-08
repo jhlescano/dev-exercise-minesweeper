@@ -1,5 +1,6 @@
 import React from 'react';
-import { Cell, CellState, CellType } from './components/Cell';
+import { Cell, CellState, CellType } from './components/Board/components/Cell';
+import { Board } from './components/Board';
 import './styles.css';
 
 enum GameStatus {
@@ -22,6 +23,8 @@ const GameSessionContext = React.createContext<GameState>({
   gameStatus: GameStatus.PLAYING
 });
 
+export const GameSession = GameSessionContext.Consumer;
+
 class GameBoardComponent extends React.Component<{}, GameState> {
   constructor(props: {}) {
     super(props);
@@ -30,10 +33,12 @@ class GameBoardComponent extends React.Component<{}, GameState> {
 
   public render() {
     return <GameSessionContext.Provider value={this.state}>
-      <div>GAME BOARD</div>
+      <div>MINESWEEPER</div>
+      <Board onCellClick={(x, y) => { console.log('click on cell '+ x + y) }} />
     </GameSessionContext.Provider>;
   }
 
+  // Private Methods
   private initGameState(): GameState {
     const cells = this.getCells();
 
