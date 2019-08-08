@@ -2,7 +2,7 @@ import React from 'react';
 import { GameSession } from '../../';
 import CellComponent from './components/Cell';
 
-import './styles.css';
+import './styles.scss';
 
 type BoardProps = {
   onCellClick: (x:number, y: number) => void

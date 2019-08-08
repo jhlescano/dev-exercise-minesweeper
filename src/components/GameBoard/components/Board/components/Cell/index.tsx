@@ -1,6 +1,6 @@
 import React from 'react';
-import { ButtonBase } from '@material-ui/core';
-import './styles.css';
+// import { ButtonBase } from '@material-ui/core';
+import './styles.scss';
 
 export enum CellState {
   PRISTINE = 'PRISTINE',
@@ -32,7 +32,7 @@ export default class CellComponent extends React.Component<Props> {
   public render() {
     const { cell, onClick } = this.props;
     return <td className={`cell ${cell.type} ${cell.state}`} onClick={() => onClick()}>
-      { cell.hintCount & cell.hintCount }
+      { cell.hintCount !== 0 && cell.hintCount }
     </td>;
   }
 }

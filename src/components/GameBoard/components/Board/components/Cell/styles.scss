@@ -1,0 +1,16 @@
+.cell {
+  padding: 5px;
+  width: 20px;
+  height: 20px;
+  border: solid 1px white;
+  cursor: pointer;
+  user-select: none;
+
+  &.BOMB {
+    background-color: red;
+  }
+
+  &.HINT {
+    background-color: transparent;
+  }
+}
