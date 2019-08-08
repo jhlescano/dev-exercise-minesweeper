@@ -10,17 +10,19 @@ enum GameStatus {
 }
 
 type Cells = {
-  [xy: string]: Cell;
+  [xy: string]: Cell
 }
 
 type GameState = {
-  cells: Cells
-  gameStatus: GameStatus
+  cells: Cells,
+  gameStatus: GameStatus,
+  bombCells: string[]
 }
 
 const GameSessionContext = React.createContext<GameState>({
   cells: {},
-  gameStatus: GameStatus.PLAYING
+  gameStatus: GameStatus.PLAYING,
+  bombCells: []
 });
 
 export const GameSession = GameSessionContext.Consumer;
@@ -42,11 +44,15 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   private initGameState(): GameState {
     const cells = this.getCells();
 
+    const bombCells = this.setRandomBombs(cells);
+
     console.log('CELLS', cells);
+    console.log('BOMBS', bombCells);
 
     return {
       cells,
-      gameStatus: GameStatus.PLAYING
+      gameStatus: GameStatus.PLAYING,
+      bombCells
     };
   }
 
@@ -67,6 +73,28 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     }
 
     return cells;
+  }
+
+  private setRandomBombs(cells: Cells, bombs: string[] = []): string[] {
+    /*
+      select random row
+      select random column
+      if that cell is already a bomb -> repeat
+      else set cell as bomb
+      repeat until bombs.length = 10
+    */
+    if (bombs.length === 10) return bombs;
+
+    const x = Math.floor(Math.random() * 10);
+    const y = Math.floor(Math.random() * 10);
+    const index = ''+x+y;
+
+    if (!(cells[index] && cells[index].type === CellType.BOMB)) {
+      bombs.push(index);
+      cells[index].type = CellType.BOMB;
+    }
+
+    return this.setRandomBombs(cells, bombs);
   }
 }
 

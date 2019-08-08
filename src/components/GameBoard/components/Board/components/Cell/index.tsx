@@ -24,7 +24,6 @@ export type Cell = {
 
 type Props = {
   cell: Cell,
-  key?: string,
   onClick: () => void
 }
 
@@ -32,7 +31,8 @@ export default class CellComponent extends React.Component<Props> {
   public render() {
     const { cell, onClick } = this.props;
     return <td className={`cell ${cell.type} ${cell.state}`} onClick={() => onClick()}>
-      { cell.hintCount !== 0 && cell.hintCount }
+      { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
+      { cell.type === CellType.BOMB && <React.Fragment>BOMB</React.Fragment>}
     </td>;
   }
 }
