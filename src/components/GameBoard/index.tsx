@@ -92,9 +92,45 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     if (!(cells[index] && cells[index].type === CellType.BOMB)) {
       bombs.push(index);
       cells[index].type = CellType.BOMB;
+
+      // update all adjacent cells
+      const aIndexes = this.gerAdjacentIndexes(x, y);
+
+      aIndexes.forEach((aIndex) => {
+        this.increaseBombHintCount(cells, aIndex);
+      });
+
+      
     }
 
     return this.setRandomBombs(cells, bombs);
+  }
+
+  private gerAdjacentIndexes(x: number, y: number): string[] {
+    // generates an array of all the adjacent cell indexes for the coord x+y
+    const aIndexes: string[] = [];
+
+    for (let i = -1; i < 2; i++) {
+      for (let j = -1; j < 2; j++) {
+        if (i !== 0 || j !== 0) {
+          const a = x + i;
+          const b = y + j;
+
+          if (a < 0 || a > 9 || b < 0 || b > 9) continue;
+          aIndexes.push(''+ a + b);
+        }
+        
+      }
+    }
+
+    return aIndexes;
+  }
+
+  private increaseBombHintCount(cells: Cells, index: string) {
+    // Increases in 1 the hint counter of the adjacents cells in the coord x+y
+    if (cells[index] && cells[index].type === CellType.HINT) {
+      cells[index].hintCount = cells[index].hintCount + 1;
+    }
   }
 }
 
