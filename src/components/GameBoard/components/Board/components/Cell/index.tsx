@@ -24,15 +24,30 @@ export type Cell = {
 
 type Props = {
   cell: Cell,
-  onClick: () => void
+  onClick: () => void,
+  onRightClick: () => void
 }
 
 export default class CellComponent extends React.Component<Props> {
   public render() {
-    const { cell, onClick } = this.props;
-    return <td className={`cell ${cell.type} ${cell.state}`} onClick={() => onClick()}>
-      { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
-      { cell.type === CellType.BOMB && <React.Fragment>BOMB</React.Fragment>}
+    const { cell, onClick, onRightClick } = this.props;
+    return <td className={`cell ${cell.state} ${cell.state === CellState.TOUCHED ? cell.type : ''}`} onClick={() => onClick()} onContextMenu={(ev) => {
+      ev.preventDefault();
+      onRightClick()
+    }}>
+      {
+        cell.state === CellState.FLAG && 'FLAG'
+      }
+      {
+        cell.state === CellState.UNSURE && '?'
+      }
+      {
+        cell.state === CellState.TOUCHED &&
+        <React.Fragment>
+          { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
+          { cell.type === CellType.BOMB && <React.Fragment>BOMB</React.Fragment>}
+        </React.Fragment>
+      }
     </td>;
   }
 }

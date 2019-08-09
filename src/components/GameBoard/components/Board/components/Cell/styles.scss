@@ -1,13 +1,24 @@
+$color-bomb: #870303;
+$color-border: white;
+$color-touched: #5d6e8f;
+
 .cell {
   padding: 5px;
-  width: 20px;
-  height: 20px;
-  border: solid 1px white;
+  width: 30px;
+  height: 30px;
+  border: solid 2px $color-border;
   cursor: pointer;
   user-select: none;
+  overflow: hidden;
 
-  &.BOMB {
-    background-color: red;
+  &.TOUCHED {
+    &.HINT {
+      background-color: $color-touched;
+    }
+
+    &.BOMB {
+      background-color: $color-bomb;
+    }
   }
 
   &.HINT {

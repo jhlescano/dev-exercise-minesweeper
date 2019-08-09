@@ -36,7 +36,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   public render() {
     return <GameSessionContext.Provider value={this.state}>
       <div>MINESWEEPER</div>
-      <Board onCellClick={(x, y) => { console.log('click on cell '+ x + y) }} />
+      <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
     </GameSessionContext.Provider>;
   }
 
@@ -130,6 +130,53 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     // Increases in 1 the hint counter of the adjacents cells in the coord x+y
     if (cells[index] && cells[index].type === CellType.HINT) {
       cells[index].hintCount = cells[index].hintCount + 1;
+    }
+  }
+
+  private onCellClick = (x: number, y: number) => {
+    console.log('click on cell '+ x + y);
+
+    const { cells } = this.state;
+    const index = ''+x+y;
+
+    if (cells[index] && cells[index].state === CellState.PRISTINE) {
+      const newCells = {...this.state.cells};
+
+      newCells[index].state = CellState.TOUCHED;
+
+      this.setState({
+        cells: newCells
+      });
+    }
+  }
+
+  private onCellRightClick = (x: number, y: number) => {
+    console.log('click on cell '+ x + y);
+
+    const { cells } = this.state;
+    const index = ''+x+y;
+
+    if (cells[index] && cells[index].state !== CellState.TOUCHED) {
+      const newCells = {...this.state.cells};
+
+      switch (newCells[index].state) {
+        case CellState.FLAG: {
+          newCells[index].state = CellState.UNSURE;
+          break;
+        }
+        case CellState.UNSURE: {
+          newCells[index].state = CellState.PRISTINE;
+          break;
+        }
+        default: {
+          newCells[index].state = CellState.FLAG;
+          break;
+        }
+      }
+
+      this.setState({
+        cells: newCells
+      });
     }
   }
 }
