@@ -1,6 +1,7 @@
 import React from 'react';
 import { Cell, CellState, CellType } from './components/Board/components/Cell';
 import { Board } from './components/Board';
+import { Header } from './components/Header';
 import './styles.css';
 
 enum GameStatus {
@@ -36,6 +37,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   public render() {
     return <GameSessionContext.Provider value={this.state}>
       <div>MINESWEEPER</div>
+      <Header />
       <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
     </GameSessionContext.Provider>;
   }
@@ -45,9 +47,6 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     const cells = this.getCells();
 
     const bombCells = this.setRandomBombs(cells);
-
-    console.log('CELLS', cells);
-    console.log('BOMBS', bombCells);
 
     return {
       cells,
@@ -136,48 +135,78 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   private onCellClick = (x: number, y: number) => {
     console.log('click on cell '+ x + y);
 
-    const { cells } = this.state;
+    const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 
-    if (cells[index] && cells[index].state === CellState.PRISTINE) {
-      const newCells = {...this.state.cells};
+    if (!(cells[index] && cells[index].state === CellState.PRISTINE) || gameStatus !== GameStatus.PLAYING) return;
 
-      newCells[index].state = CellState.TOUCHED;
+    const newCells = {...this.state.cells};
 
-      this.setState({
-        cells: newCells
-      });
+    newCells[index].state = CellState.TOUCHED;
+    //if the touched cell is a bomb, end the game
+    let newStatus: GameStatus = gameStatus;
+    if (newCells[index].type === CellType.BOMB) {
+      newStatus = GameStatus.LOST
     }
+
+    this.setState({
+      cells: newCells,
+      gameStatus: newStatus
+    }, this.evalWinCondition);
   }
 
   private onCellRightClick = (x: number, y: number) => {
-    console.log('click on cell '+ x + y);
+    console.log('right click on cell '+ x + y);
 
-    const { cells } = this.state;
+    const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 
-    if (cells[index] && cells[index].state !== CellState.TOUCHED) {
-      const newCells = {...this.state.cells};
+    if (!(cells[index] && cells[index].state !== CellState.TOUCHED) || gameStatus !== GameStatus.PLAYING) return;
 
-      switch (newCells[index].state) {
-        case CellState.FLAG: {
-          newCells[index].state = CellState.UNSURE;
-          break;
-        }
-        case CellState.UNSURE: {
-          newCells[index].state = CellState.PRISTINE;
-          break;
-        }
-        default: {
-          newCells[index].state = CellState.FLAG;
-          break;
-        }
+    const newCells = {...this.state.cells};
+
+    switch (newCells[index].state) {
+      case CellState.FLAG: {
+        newCells[index].state = CellState.UNSURE;
+        break;
       }
-
-      this.setState({
-        cells: newCells
-      });
+      case CellState.UNSURE: {
+        newCells[index].state = CellState.PRISTINE;
+        break;
+      }
+      default: {
+        newCells[index].state = CellState.FLAG;
+        break;
+      }
     }
+
+    this.setState({
+      cells: newCells
+    }, this.evalWinCondition);
+  }
+
+  private evalWinCondition () {
+    // Evaluate the state of the board to calculate if the game should end.
+    const { cells, gameStatus } = this.state;
+
+    if (gameStatus !== GameStatus.PLAYING) return;
+
+    /**
+     * WIN Condition: all cells must have TOUCHED state except for the bomb cells, wich must have the FLAG state
+     */
+
+    const cellsValues = Object.values(cells);
+
+    for (let i = 0; i < cellsValues.length; i++) {
+      let cell = cellsValues[i];
+
+      if (cell.state === CellState.PRISTINE) return; // if there is one untouched cell, continue the game
+      if (cell.type === CellType.BOMB && cell.state !== CellState.FLAG) return; // if not all bombs are flaged, continue the game
+    }
+
+    this.setState({
+      gameStatus: GameStatus.WIN
+    });
   }
 }
 

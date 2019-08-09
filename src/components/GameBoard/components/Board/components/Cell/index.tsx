@@ -42,7 +42,7 @@ export default class CellComponent extends React.Component<Props> {
         cell.state === CellState.UNSURE && '?'
       }
       {
-        cell.state === CellState.TOUCHED &&
+        // cell.state === CellState.TOUCHED &&
         <React.Fragment>
           { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
           { cell.type === CellType.BOMB && <React.Fragment>BOMB</React.Fragment>}
