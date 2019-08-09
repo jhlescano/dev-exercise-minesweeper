@@ -1,0 +1,50 @@
+.header {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  flex-shrink: 0;
+  justify-content: space-between;
+  align-items: center;
+
+  margin: 4px;
+  padding: 4px;
+
+  border: solid 2px white;
+  border-radius: 2px;
+
+  > * + * {
+    margin-left: 5px;
+  }
+
+  min-width: 130px;
+
+  .bomb-counter {
+    padding: 10px;
+    border: solid 2px white;
+    border-radius: 2px;
+
+    font-size: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .count {
+      width: 30px;
+      line-height: 30px;
+
+      overflow: hidden;
+      text-align: right;
+      vertical-align: center;
+    }
+  }
+
+  .state-display {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+
+    color: yellow;
+  }
+}

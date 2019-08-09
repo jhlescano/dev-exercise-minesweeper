@@ -4,7 +4,7 @@ import { Board } from './components/Board';
 import { Header } from './components/Header';
 import './styles.css';
 
-enum GameStatus {
+export enum GameStatus {
   PLAYING = 'PLAYING',
   LOST = 'LOST',
   WIN = 'WIN'
