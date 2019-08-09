@@ -37,7 +37,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   public render() {
     return <GameSessionContext.Provider value={this.state}>
       <div>MINESWEEPER</div>
-      <Header />
+      <Header onRestartClick={this.restartGame} />
       <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
     </GameSessionContext.Provider>;
   }
@@ -207,6 +207,10 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     this.setState({
       gameStatus: GameStatus.WIN
     });
+  }
+
+  private restartGame = () => {
+    this.setState(this.initGameState());
   }
 }
 

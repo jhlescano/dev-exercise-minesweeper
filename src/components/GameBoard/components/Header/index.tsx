@@ -17,13 +17,15 @@ class HeaderComponent extends React.Component<Props> {
         const flagedCount = Object.values(cells).filter((cell) => cell.state === CellState.FLAG).length;
         const bombsCount = bombCells.length - flagedCount;
 
+        const { onRestartClick } = this.props;
+
         return <div className='header'>
           <div className='bomb-counter'>
             <div className='count'>{bombsCount}</div>
             <FlagOutlined />
           </div>
           <div className='state-display'>
-            <IconButton centerRipple color='inherit'>
+            <IconButton centerRipple color='inherit' onClick={onRestartClick}>
               { gameStatus === GameStatus.PLAYING && <SentimentSatisfiedAltOutlined fontSize='large' /> }
               { gameStatus === GameStatus.WIN && <SentimentVerySatisfiedOutlined fontSize='large' /> }
               { gameStatus === GameStatus.LOST && <SentimentVeryDissatisfiedOutlined fontSize='large' /> }
