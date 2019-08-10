@@ -1,5 +1,7 @@
 import React from 'react';
-import { Flag, HelpOutline } from '@material-ui/icons';
+import { Icon } from '@material-ui/core';
+import { Flag } from '@material-ui/icons';
+import { ReactComponent as MineIcon } from './assests/mine.svg';
 import './styles.scss';
 
 export enum CellState {
@@ -45,7 +47,7 @@ export default class CellComponent extends React.Component<Props> {
         cell.state === CellState.TOUCHED &&
         <React.Fragment>
           { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
-          { cell.type === CellType.BOMB && <React.Fragment>BOMB</React.Fragment>}
+          { cell.type === CellType.BOMB && <MineIcon />}
         </React.Fragment>
       }
     </td>;

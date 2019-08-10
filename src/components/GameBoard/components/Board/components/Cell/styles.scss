@@ -1,4 +1,5 @@
 $color-bomb: #870303;
+$color-flag: #fc0303;
 $color-border: white;
 $color-touched: #5d6e8f;
 
@@ -30,6 +31,12 @@ $color-touched: #5d6e8f;
   }
 
   .flag-icon {
-    color: #fc0303;
+    color: $color-flag;
+  }
+
+  .cell-icon {
+    width: 100%;
+    height: 100%;
+    display: grid;
   }
 }
