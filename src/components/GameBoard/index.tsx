@@ -222,7 +222,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     for (let i = 0; i < cellsValues.length; i++) {
       let cell = cellsValues[i];
 
-      if (cell.state === CellState.PRISTINE) return; // if there is one untouched cell, continue the game
+      if (cell.state === CellState.PRISTINE || cell.state === CellState.UNSURE) return; // if there is one untouched cell, continue the game
       if (cell.type === CellType.BOMB && cell.state !== CellState.FLAG) return; // if not all bombs are flaged, continue the game
     }
 

@@ -21,6 +21,7 @@ $color-background: #AAA;
   color: white;
 
   background-color: $color-background;
+  transition: background-color .25s ease-out;
 
   &.TOUCHED {
     &.HINT {
