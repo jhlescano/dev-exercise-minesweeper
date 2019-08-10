@@ -1,5 +1,5 @@
 import React from 'react';
-// import { ButtonBase } from '@material-ui/core';
+import { Flag, HelpOutline } from '@material-ui/icons';
 import './styles.scss';
 
 export enum CellState {
@@ -36,7 +36,7 @@ export default class CellComponent extends React.Component<Props> {
       onRightClick()
     }}>
       {
-        cell.state === CellState.FLAG && 'FLAG'
+        cell.state === CellState.FLAG && <Flag className='flag-icon' />
       }
       {
         cell.state === CellState.UNSURE && '?'

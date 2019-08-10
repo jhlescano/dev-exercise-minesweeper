@@ -10,6 +10,11 @@ export enum GameStatus {
   WIN = 'WIN'
 }
 
+type Coord = {
+  x: number,
+  y: number
+}
+
 type Cells = {
   [xy: string]: Cell
 }
@@ -93,7 +98,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
       cells[index].type = CellType.BOMB;
 
       // update all adjacent cells
-      const aIndexes = this.gerAdjacentIndexes(x, y);
+      const aIndexes = this.gerAdjacentIndexes(x, y) as string[];
 
       aIndexes.forEach((aIndex) => {
         this.increaseBombHintCount(cells, aIndex);
@@ -105,9 +110,10 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     return this.setRandomBombs(cells, bombs);
   }
 
-  private gerAdjacentIndexes(x: number, y: number): string[] {
+  private gerAdjacentIndexes(x: number, y: number, asObject?: boolean): string[] | Coord[] {
     // generates an array of all the adjacent cell indexes for the coord x+y
-    const aIndexes: string[] = [];
+    const aIndexesC: Coord[] = [];
+    const aIndexesS: string[] = [];
 
     for (let i = -1; i < 2; i++) {
       for (let j = -1; j < 2; j++) {
@@ -116,13 +122,17 @@ class GameBoardComponent extends React.Component<{}, GameState> {
           const b = y + j;
 
           if (a < 0 || a > 9 || b < 0 || b > 9) continue;
-          aIndexes.push(''+ a + b);
+
+          if (asObject)
+            aIndexesC.push({ x: a, y: b });
+          else
+            aIndexesS.push(''+ a + b);
         }
         
       }
     }
 
-    return aIndexes;
+    return (asObject) ? aIndexesC : aIndexesS;
   }
 
   private increaseBombHintCount(cells: Cells, index: string) {
@@ -147,6 +157,14 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     let newStatus: GameStatus = gameStatus;
     if (newCells[index].type === CellType.BOMB) {
       newStatus = GameStatus.LOST
+    }
+
+    if (cells[index].type === CellType.HINT && cells[index].hintCount === 0) { // if empty hint cell repeat click for every adjacent cell
+      const aIndexes = this.gerAdjacentIndexes(x, y, true) as Coord[];
+
+      aIndexes.forEach((aIndex) => {
+        this.onCellClick(aIndex.x, aIndex.y);
+      });
     }
 
     this.setState({

@@ -4,12 +4,16 @@ $color-touched: #5d6e8f;
 
 .cell {
   padding: 5px;
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   border: solid 2px $color-border;
   cursor: pointer;
   user-select: none;
   overflow: hidden;
+
+  text-align: center;
+  vertical-align: middle;
+  font-size: 24px;
 
   &.TOUCHED {
     &.HINT {
@@ -23,5 +27,9 @@ $color-touched: #5d6e8f;
 
   &.HINT {
     background-color: transparent;
+  }
+
+  .flag-icon {
+    color: #fc0303;
   }
 }
