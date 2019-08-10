@@ -26,10 +26,9 @@ and run the project:
 
 and then access to http://localhost:3000 (by default runs on port 3000 otherwise runs on the next available port).
 
-### ------------------------------------------------------------------------------------------------
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+#### This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-# Built With
+## Built With
 
 * [ReactJS](https://reactjs.org/)
 * [TypeScript](https://www.typescriptlang.org/)
