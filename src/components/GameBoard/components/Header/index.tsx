@@ -5,6 +5,7 @@ import { SentimentSatisfiedAltOutlined, SentimentVeryDissatisfiedOutlined, Senti
 
 import './styles.scss';
 import { CellState } from '../Board/components/Cell';
+import { TimerDisplay }  from './components/TimerDisplay';
 
 type Props = {
   onRestartClick?: () => void
@@ -26,12 +27,12 @@ class HeaderComponent extends React.Component<Props> {
           </div>
           <div className='state-display'>
             <IconButton centerRipple color='inherit' onClick={onRestartClick}>
-              { gameStatus === GameStatus.PLAYING && <SentimentSatisfiedAltOutlined fontSize='large' /> }
+              { (gameStatus === GameStatus.PLAYING || gameStatus === GameStatus.PAUSED) && <SentimentSatisfiedAltOutlined fontSize='large' /> }
               { gameStatus === GameStatus.WIN && <SentimentVerySatisfiedOutlined fontSize='large' /> }
               { gameStatus === GameStatus.LOST && <SentimentVeryDissatisfiedOutlined fontSize='large' /> }
             </IconButton>
           </div>
-          <div className='timer'></div>
+          <TimerDisplay state={(gameStatus === GameStatus.PLAYING) ? 'run' : (gameStatus !== GameStatus.PAUSED) ? 'stop' : 'clear'} />
         </div>
       }}
     </GameSession>;

@@ -7,7 +7,8 @@ import './styles.css';
 export enum GameStatus {
   PLAYING = 'PLAYING',
   LOST = 'LOST',
-  WIN = 'WIN'
+  WIN = 'WIN',
+  PAUSED = 'PAUSED'
 }
 
 type Coord = {
@@ -27,7 +28,7 @@ type GameState = {
 
 const GameSessionContext = React.createContext<GameState>({
   cells: {},
-  gameStatus: GameStatus.PLAYING,
+  gameStatus: GameStatus.PAUSED,
   bombCells: []
 });
 
@@ -55,7 +56,7 @@ class GameBoardComponent extends React.Component<{}, GameState> {
 
     return {
       cells,
-      gameStatus: GameStatus.PLAYING,
+      gameStatus: GameStatus.PAUSED,
       bombCells
     };
   }
@@ -148,13 +149,15 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 
-    if (!(cells[index] && cells[index].state === CellState.PRISTINE) || gameStatus !== GameStatus.PLAYING) return;
+    if (!(cells[index] && cells[index].state === CellState.PRISTINE) || gameStatus === GameStatus.LOST || gameStatus === GameStatus.WIN) return;
+    let newStatus: GameStatus = gameStatus;
+
+    if (gameStatus === GameStatus.PAUSED) newStatus = GameStatus.PLAYING;
 
     const newCells = {...this.state.cells};
 
     newCells[index].state = CellState.TOUCHED;
     //if the touched cell is a bomb, end the game
-    let newStatus: GameStatus = gameStatus;
     if (newCells[index].type === CellType.BOMB) {
       newStatus = GameStatus.LOST
     }
@@ -179,7 +182,9 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 
-    if (!(cells[index] && cells[index].state !== CellState.TOUCHED) || gameStatus !== GameStatus.PLAYING) return;
+    if (!(cells[index] && cells[index].state !== CellState.TOUCHED) || gameStatus === GameStatus.LOST || gameStatus === GameStatus.WIN) return;
+    let newStatus: GameStatus = gameStatus;
+    if (gameStatus === GameStatus.PAUSED) newStatus = GameStatus.PLAYING;
 
     const newCells = {...this.state.cells};
 
@@ -199,7 +204,8 @@ class GameBoardComponent extends React.Component<{}, GameState> {
     }
 
     this.setState({
-      cells: newCells
+      cells: newCells,
+      gameStatus: newStatus,
     }, this.evalWinCondition);
   }
 
