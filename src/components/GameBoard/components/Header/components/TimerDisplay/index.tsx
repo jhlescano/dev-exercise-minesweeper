@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 type Props = {
-  state: 'clear' | 'run' | 'pause'
+  state: 'clear' | 'run' | 'stop'
 }
 
 type State = {
@@ -30,6 +30,8 @@ class TimerDisplayComponent extends React.Component<Props, State> {
         break;
       }
       case 'run': {
+        if (this.props.state === 'run') return;
+
         this.interval = setInterval(() => {
           this.setState(prevState => ({
             count: prevState.count + 1
@@ -37,7 +39,7 @@ class TimerDisplayComponent extends React.Component<Props, State> {
         }, 1000);
         break;
       }
-      case 'pause': {
+      case 'stop': {
         this.interval && clearInterval(this.interval);
         this.interval = undefined;
         break;
