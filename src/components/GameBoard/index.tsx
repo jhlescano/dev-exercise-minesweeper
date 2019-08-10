@@ -4,6 +4,9 @@ import { Board } from './components/Board';
 import { Header } from './components/Header';
 import './styles.scss';
 
+import { Snackbar, SnackbarContent } from '@material-ui/core';
+import { minWidth } from '@material-ui/system';
+
 export enum GameStatus {
   PLAYING = 'PLAYING',
   LOST = 'LOST',
@@ -46,6 +49,18 @@ class GameBoardComponent extends React.Component<{}, GameState> {
         <div className='title'>MINESWEEPER</div>
         <Header onRestartClick={this.restartGame} />
         <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
+        <Snackbar
+          open={this.state.gameStatus === GameStatus.LOST || this.state.gameStatus === GameStatus.WIN}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          ContentProps={{
+            style: {
+              backgroundColor: (this.state.gameStatus === GameStatus.WIN) ? 'green' : 'red',
+              minWidth: 0
+            }
+          }}
+          message={(this.state.gameStatus === GameStatus.WIN) ? 'CONGRATULATIONS YOU WON!' : 'YOU LOSE'}
+          transitionDuration={{ enter: 250, exit: 0 }}
+        />
       </div>
     </GameSessionContext.Provider>;
   }
