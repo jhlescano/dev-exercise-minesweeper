@@ -26,10 +26,10 @@ class HeaderComponent extends React.Component<Props> {
             <FlagOutlined />
           </div>
           <div className='state-display'>
-            <IconButton centerRipple color='inherit' onClick={onRestartClick}>
-              { (gameStatus === GameStatus.PLAYING || gameStatus === GameStatus.PAUSED) && <SentimentSatisfiedAltOutlined fontSize='large' /> }
-              { gameStatus === GameStatus.WIN && <SentimentVerySatisfiedOutlined fontSize='large' /> }
-              { gameStatus === GameStatus.LOST && <SentimentVeryDissatisfiedOutlined fontSize='large' /> }
+            <IconButton color='inherit' style={{ fontSize: 'inherit' }} onClick={onRestartClick}>
+              { (gameStatus === GameStatus.PLAYING || gameStatus === GameStatus.PAUSED) && <SentimentSatisfiedAltOutlined fontSize='inherit' /> }
+              { gameStatus === GameStatus.WIN && <SentimentVerySatisfiedOutlined fontSize='inherit' /> }
+              { gameStatus === GameStatus.LOST && <SentimentVeryDissatisfiedOutlined fontSize='inherit' /> }
             </IconButton>
           </div>
           <TimerDisplay state={(gameStatus === GameStatus.PLAYING) ? 'run' : (gameStatus !== GameStatus.PAUSED) ? 'stop' : 'clear'} />

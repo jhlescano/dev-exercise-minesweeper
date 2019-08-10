@@ -1,7 +1,5 @@
 import React from 'react';
-import { Icon } from '@material-ui/core';
 import { Flag } from '@material-ui/icons';
-import { ReactComponent as MineIcon } from './assests/mine.svg';
 import './styles.scss';
 
 export enum CellState {
@@ -33,7 +31,7 @@ type Props = {
 export default class CellComponent extends React.Component<Props> {
   public render() {
     const { cell, onClick, onRightClick } = this.props;
-    return <td className={`cell ${cell.state} ${cell.state === CellState.TOUCHED ? cell.type : ''}`} onClick={() => onClick()} onContextMenu={(ev) => {
+    return <td className={`cell ${cell.state} ${cell.state === CellState.TOUCHED ? cell.type + ' h' + cell.hintCount : ''}`} onClick={() => onClick()} onContextMenu={(ev) => {
       ev.preventDefault();
       onRightClick()
     }}>
@@ -47,10 +45,8 @@ export default class CellComponent extends React.Component<Props> {
         cell.state === CellState.TOUCHED &&
         <React.Fragment>
           { cell.type === CellType.HINT && cell.hintCount !== 0 && cell.hintCount }
-          { cell.type === CellType.BOMB && <MineIcon />}
         </React.Fragment>
       }
     </td>;
   }
 }
-

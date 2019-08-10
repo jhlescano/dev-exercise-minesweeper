@@ -35,11 +35,13 @@ class BoardComponent extends React.Component<BoardProps> {
           table.push(<tr key={''+i}>{children}</tr>)
         }
 
-        return <table className='board'>
-          <tbody>
-            {table}
-          </tbody>
-        </table>;
+        return <div className='board'>
+          <table>
+            <tbody>
+              {table}
+            </tbody>
+          </table>
+        </div>;
       }}
     </GameSession>
   }

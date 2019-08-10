@@ -2,7 +2,7 @@ import React from 'react';
 import { Cell, CellState, CellType } from './components/Board/components/Cell';
 import { Board } from './components/Board';
 import { Header } from './components/Header';
-import './styles.css';
+import './styles.scss';
 
 export enum GameStatus {
   PLAYING = 'PLAYING',
@@ -42,9 +42,11 @@ class GameBoardComponent extends React.Component<{}, GameState> {
 
   public render() {
     return <GameSessionContext.Provider value={this.state}>
-      <div>MINESWEEPER</div>
-      <Header onRestartClick={this.restartGame} />
-      <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
+      <div className='main-page'>
+        <div className='title'>MINESWEEPER</div>
+        <Header onRestartClick={this.restartGame} />
+        <Board onCellClick={this.onCellClick} onCellRightClick={this.onCellRightClick} />
+      </div>
     </GameSessionContext.Provider>;
   }
 
@@ -144,8 +146,6 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   }
 
   private onCellClick = (x: number, y: number) => {
-    console.log('click on cell '+ x + y);
-
     const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 
@@ -177,8 +177,6 @@ class GameBoardComponent extends React.Component<{}, GameState> {
   }
 
   private onCellRightClick = (x: number, y: number) => {
-    console.log('right click on cell '+ x + y);
-
     const { cells, gameStatus } = this.state;
     const index = ''+x+y;
 

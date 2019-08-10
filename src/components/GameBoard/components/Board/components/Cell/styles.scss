@@ -1,13 +1,15 @@
-$color-bomb: #870303;
-$color-flag: #fc0303;
-$color-border: white;
-$color-touched: #5d6e8f;
+$color-bomb: red;
+$color-flag: red;
+$color-border: #333;
+$color-touched: #e4e4e4;
+$color-background: #AAA;
 
 .cell {
   padding: 5px;
   width: 32px;
   height: 32px;
-  border: solid 2px $color-border;
+  border: solid 3px $color-border;
+  border-style: inset;
   cursor: pointer;
   user-select: none;
   overflow: hidden;
@@ -15,19 +17,46 @@ $color-touched: #5d6e8f;
   text-align: center;
   vertical-align: middle;
   font-size: 24px;
+  font-weight: bolder;
+  color: white;
+
+  background-color: $color-background;
 
   &.TOUCHED {
     &.HINT {
       background-color: $color-touched;
+
+      // Hint colors
+      &.h1 {
+        color: blue;
+      }
+      &.h2 {
+        color: green;
+      }
+      &.h3 {
+        color: red;
+      }
+      &.h4 {
+        color: purple;
+      }
+      &.h5 {
+        color: orange;
+      }
+      &.h6 {
+        color: yellow;
+      }
+      &.h7 {
+        color: turquoise;
+      }
+      &.h8 {
+        color: black;
+      }
     }
 
     &.BOMB {
       background-color: $color-bomb;
+      background-image: url(./assests/mine.svg);
     }
-  }
-
-  &.HINT {
-    background-color: transparent;
   }
 
   .flag-icon {

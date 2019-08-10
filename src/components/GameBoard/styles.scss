@@ -1,0 +1,11 @@
+.main-page {
+  display: flex;
+  flex-direction: column;
+
+  .title {
+    align-self: center;
+    color: #333;
+    font-size: 38px;
+    margin: 10px 0;
+  }
+}
